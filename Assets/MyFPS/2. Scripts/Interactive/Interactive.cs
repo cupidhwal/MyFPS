@@ -1,32 +1,23 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 namespace MyFPS
 {
-    // 문의 개폐를 전담하는 클래스
-    public class DoorCellOpen : MonoBehaviour
+    public abstract class Interactive : MonoBehaviour
     {
         // 필드
         #region Variables
         private float theDistance;
 
+        // Action UI
         public GameObject extraCross;
-        public GameObject doorActionUI;
+        public GameObject actionUI;
         public TextMeshProUGUI actionText;
-        [SerializeField] private string action = "Open the Door";
-
-        // Action: 문 열기
-        private Animator animator;
-        public AudioSource audioSource;
+        protected string action = "Action";
         #endregion
 
         // 라이프 사이클
         #region Life Cycle
-        private void Start()
-        {
-            animator = GetComponentInParent<Animator>();
-        }
-
         private void Update()
         {
             theDistance = PlayerCasting.distanceFromTarget;
@@ -38,8 +29,10 @@ namespace MyFPS
         private void SwitchActionUI(bool flag)
         {
             extraCross.SetActive(flag);
-            doorActionUI.SetActive(flag);
+            actionUI.SetActive(flag);
         }
+
+        protected abstract void DoAction();
         #endregion
 
         // 이벤트 메서드
@@ -50,23 +43,20 @@ namespace MyFPS
             // 거리가 2이하 일때
             if (theDistance <= 2)
             {
-                if (animator.GetBool("isOpen")) return;
-
                 SwitchActionUI(true);
                 actionText.text = action;
 
                 if (Input.GetButtonDown("Action"))
                 {
-                    // 문이 열린다
-                    animator.SetBool("isOpen", true);
-                    audioSource.Play();
+                    SwitchActionUI(false);
+
+                    // 상호작용
+                    DoAction();
                 }
             }
 
             else
-            {
                 SwitchActionUI(false);
-            }
         }
 
         // 마우스를 가져다 대면 액션 UI를 보여준다
