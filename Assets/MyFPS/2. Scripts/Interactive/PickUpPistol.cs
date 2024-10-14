@@ -10,6 +10,8 @@ namespace MyFPS
         // Action
         public GameObject arrow;
         public GameObject realPistol;
+
+        public GameObject enemyTrigger;
         #endregion
 
         // 라이프 사이클
@@ -26,6 +28,9 @@ namespace MyFPS
         {
             realPistol.SetActive(true);
             arrow.SetActive(false);
+
+            enemyTrigger.SetActive(true);
+
             Destroy(gameObject);
         }
         #endregion
