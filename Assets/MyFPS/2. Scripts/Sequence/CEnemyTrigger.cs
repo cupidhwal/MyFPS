@@ -34,6 +34,10 @@ namespace MyFPS
 
             // 적 등장 사운드
             jumpScare.Play();
+
+            Destroy(gameObject);
+
+            yield break;
         }
     }
 }
