@@ -11,6 +11,7 @@ namespace MyFPS
         private bool isFire = false;
 
         public Transform firePoint;
+        [SerializeField] private float attackDamage = 5f;
 
         private Animator animator;
         public AudioSource pistolShot;
@@ -32,17 +33,31 @@ namespace MyFPS
 
         IEnumerator Shoot()
         {
-            isFire = true;
+            try
+            {
+                isFire = true;
+                float maxDistance = 100f;
+
+                if (Physics.Raycast(firePoint.position, firePoint.TransformDirection(Vector3.forward), out RaycastHit hit, maxDistance))
+                {
+                    //적에게 대미지
+                    IDamagable robot = hit.transform.GetComponent<IDamagable>();
+                    if (robot != null)
+                    {
+                        robot.TakeDamage(attackDamage);
+                    }
+                }
+            }
+
+            catch
+            {
+                Debug.Log("타겟이 없어");
+            }
 
             animator.SetTrigger("ShootTrigger");
 
             yield return null;
 
-            if (Physics.Raycast(firePoint.position, firePoint.TransformDirection(Vector3.forward), out RaycastHit hit, 10f))
-            {
-                //적에게 대미지
-            }
-            
             pistolShot.Play();
             muzzle.Play();
 

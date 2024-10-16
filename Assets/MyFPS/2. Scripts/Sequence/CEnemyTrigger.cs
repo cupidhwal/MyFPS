@@ -6,6 +6,7 @@ namespace MyFPS
     public class CEnemyTrigger : MonoBehaviour
     {
         #region Variables
+        public GameObject door1;
         public GameObject theDoor;      // 문
         public AudioSource doorBang;    // 문 열기 사운드
 
@@ -21,7 +22,7 @@ namespace MyFPS
         // 트리거 작동 시 플레이
         IEnumerator PlaySequence()
         {
-            theDoor.GetComponent<Animator>().SetBool("isOpen", true);
+            door1.GetComponent<Animator>().SetBool("isOpen", true);
             theDoor.GetComponent<BoxCollider>().enabled = false;
 
             // 문 사운드
