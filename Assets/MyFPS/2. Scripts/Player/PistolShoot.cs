@@ -16,6 +16,9 @@ namespace MyFPS
         private Animator animator;
         public AudioSource pistolShot;
         public ParticleSystem muzzle;
+        public ParticleSystem flash;
+
+        public GameObject hitImpactPrefab;
         #endregion
 
         void Start()
@@ -27,7 +30,7 @@ namespace MyFPS
         void Update()
         {
             // 격발
-            if (Input.GetButtonDown("Fire") && !isFire)
+            if (Input.GetButtonDown("Fire") && !isFire && PlayerStats.Instance.UseArmory(1))
                 StartCoroutine(Shoot());
         }
 
@@ -40,12 +43,18 @@ namespace MyFPS
 
                 if (Physics.Raycast(firePoint.position, firePoint.TransformDirection(Vector3.forward), out RaycastHit hit, maxDistance))
                 {
-                    //적에게 대미지
-                    IDamagable robot = hit.transform.GetComponent<IDamagable>();
-                    if (robot != null)
+                    // 탄착 임팩트 효과
+                    GameObject eff = Instantiate(hitImpactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                    Destroy(eff, 2f);
+
+                    if (hit.rigidbody != null)
                     {
-                        robot.TakeDamage(attackDamage);
+                        hit.rigidbody.AddForce(-hit.normal * 1, ForceMode.Impulse);
                     }
+
+                    // 적에게 대미지
+                    if (hit.transform.TryGetComponent<IDamagable>(out var damagable))
+                        damagable.TakeDamage(attackDamage);
                 }
             }
 

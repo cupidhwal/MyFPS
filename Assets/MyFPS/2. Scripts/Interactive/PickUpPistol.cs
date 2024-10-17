@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 
 namespace MyFPS
@@ -11,6 +10,8 @@ namespace MyFPS
         public GameObject arrow;
         public GameObject realPistol;
 
+        public GameObject armoryUI;
+        public GameObject armoryBox;
         public GameObject enemyTrigger;
         #endregion
 
@@ -29,6 +30,8 @@ namespace MyFPS
             realPistol.SetActive(true);
             arrow.SetActive(false);
 
+            armoryUI.SetActive(true);
+            armoryBox.SetActive(true);
             enemyTrigger.SetActive(true);
 
             Destroy(gameObject);
