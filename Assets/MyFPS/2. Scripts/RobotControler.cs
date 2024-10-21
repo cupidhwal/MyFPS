@@ -21,6 +21,8 @@ namespace MyFPS
         private RobotState beforeState;
 
         // 컴포넌트
+        public AudioSource bgm01;
+        public AudioSource bgm02;
         private Animator animator;
         private List<Collider> colliders = new();
 
@@ -171,6 +173,10 @@ namespace MyFPS
 
             Debug.Log("Robot is Dead!");
             SetState(RobotState.R_Death);
+
+            // 배경음 원상복구
+            bgm02.Stop();
+            bgm01.Play();
 
             foreach (Collider col in colliders)
             {

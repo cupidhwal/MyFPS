@@ -11,7 +11,7 @@ namespace MyFPS
 
         private Controls control;
 
-        public static float distanceFromTarget;
+        public static float distanceFromTarget = Mathf.Infinity;
         [SerializeField] private float toTarget;
 
         public Transform cameraTransform;
